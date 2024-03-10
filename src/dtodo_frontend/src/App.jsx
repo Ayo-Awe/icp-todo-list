@@ -1,31 +1,38 @@
-import { useState } from 'react';
-import { dtodo_backend } from 'declarations/dtodo_backend';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import Todo from "@/components/ui/todo";
+import { Dialog } from "@/components/ui/dialog";
+import { CreateTodoDialog } from "./components/ui/todo-modal";
+import { nanoid } from "nanoid";
 
-function App() {
-  const [greeting, setGreeting] = useState('');
+export default function App() {
+  const [todos, setTodos] = useState([]);
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const name = event.target.elements.name.value;
-    dtodo_backend.greet(name).then((greeting) => {
-      setGreeting(greeting);
-    });
-    return false;
+  function handleAddTodo(todo) {
+    const newTodo = { id: nanoid(), ...todo };
+    setTodos((prev) => [...prev, newTodo]);
   }
 
   return (
-    <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting">{greeting}</section>
-    </main>
+    <Card className="w-[350px] m-auto mt-20">
+      <CardHeader>
+        <CardTitle className="text-xl">D-Todo App</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {todos.map((todo) => (
+          <Todo description={todo.description} id={todo.id} />
+        ))}
+      </CardContent>
+      <CardFooter className="text-center flex justify-end">
+        <CreateTodoDialog onSubmit={handleAddTodo} />
+      </CardFooter>
+    </Card>
   );
 }
-
-export default App;
