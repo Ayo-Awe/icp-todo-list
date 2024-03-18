@@ -1,11 +1,15 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardHeader } from "./card";
+import { TrashIcon } from "@radix-ui/react-icons";
 
-const Todo = ({ description }) => {
+const Todo = ({ description, done, onToggle, onDelete }) => {
   return (
-    <div className="my-2 flex justify-between items-center p-3 shadow rounded-md">
+    <div className="my-2 flex justify-between items-center p-3 shadow rounded-md outline outline-1">
       <p>{description}</p>
-      <Checkbox />
+
+      <div className="flex items-center">
+        <Checkbox checked={done} onCheckedChange={onToggle} />
+        <TrashIcon className="ml-4 hover:cursor-pointer" onClick={onDelete} />
+      </div>
     </div>
   );
 };
